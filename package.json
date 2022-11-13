@@ -1,0 +1,26 @@
+{
+  "name": "draw",
+  "version": "1.0.0",
+  "description": "canvas draw",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.ts",
+    "lint": "eslint src/*",
+    "fix": "eslint src/* --fix"
+  },
+  "keywords": ["canvas", "draw"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@linhuibin/eslint-config": "^0.0.4",
+    "eslint": "^8.27.0",
+    "tsup": "^6.4.0",
+    "typescript": "^4.8.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@linhuibin/eslint-config"
+    ]
+  }
+}
