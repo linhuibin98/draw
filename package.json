@@ -1,9 +1,11 @@
 {
-  "name": "draw",
-  "version": "1.0.0",
+  "name": "@unbundle/draw",
+  "version": "0.0.0",
   "description": "canvas draw",
   "main": "./dist/index.global.js",
   "exports": "./dist/index.mjs",
+  "homepage": "https: //github.com/linhuibin98/draw",
+  "packageManager": "pnpm@7.15.0",
   "scripts": {
     "dev": "npm run clean && tsup --watch",
     "build": "npm run clean && tsup",
@@ -15,8 +17,8 @@
     "canvas",
     "draw"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "linhuibin <1032352370@qq.com> (https://github.com/linhuibin98/)",
+  "license": "MIT",
   "devDependencies": {
     "@linhuibin/eslint-config": "^0.0.4",
     "eslint": "^8.27.0",
@@ -28,5 +30,6 @@
     "extends": [
       "@linhuibin/eslint-config"
     ]
-  }
+  },
+  "files": ["dist"]
 }
