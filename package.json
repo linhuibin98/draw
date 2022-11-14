@@ -2,19 +2,25 @@
   "name": "draw",
   "version": "1.0.0",
   "description": "canvas draw",
-  "main": "index.js",
+  "main": "./dist/index.global.js",
+  "exports": "./dist/index.mjs",
   "scripts": {
-    "dev": "tsup src/index.ts --watch",
-    "build": "tsup src/index.ts",
+    "dev": "npm run clean && tsup --watch",
+    "build": "npm run clean && tsup",
     "lint": "eslint src/*",
-    "fix": "eslint src/* --fix"
+    "fix": "eslint src/* --fix",
+    "clean": "rimraf ./dist"
   },
-  "keywords": ["canvas", "draw"],
+  "keywords": [
+    "canvas",
+    "draw"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@linhuibin/eslint-config": "^0.0.4",
     "eslint": "^8.27.0",
+    "rimraf": "^3.0.2",
     "tsup": "^6.4.0",
     "typescript": "^4.8.4"
   },
