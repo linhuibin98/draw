@@ -9,7 +9,7 @@ export class Util {
 
   /**
    * 角度转弧度，注意 canvas 中用的都是弧度，但是角度对我们来说比较直观
-   * @params {number} degrees 角度
+   * @params degrees 角度
    * */
   static degreesToRadians(degrees: number): number {
     return degrees * PiBy180
@@ -17,7 +17,7 @@ export class Util {
 
   /**
    * 弧度转角度，注意 canvas 中用的都是弧度，但是角度对我们来说比较直观
-   * @params {number} radians 弧度
+   * @params radians 弧度
    * */
   static radiansToDegrees(radians: number): number {
     return radians / PiBy180
@@ -25,8 +25,8 @@ export class Util {
 
   /**
    * 从数组中移除指定的元素，从前往后找到的第一个元素
-   * @params {Array<any>} array 数组
-   * @params {any} value 指定要移除的元素
+   * @params array 数组
+   * @params value 指定要移除的元素
    *  */
   static removeFromArray(array: any[], value: any) {
     const idx = array.indexOf(value)
@@ -95,6 +95,39 @@ export class Util {
 
   static setOpacity(el: HTMLElement, value: string) {
     el.style.opacity = value
+    return el
+  }
+
+  /** 设置 css 的 userSelect 样式为 none，也就是不可选中的状态 */
+  static makeElementUnselectable(element: HTMLElement): HTMLElement {
+    element.style.userSelect = 'none'
+    return element
+  }
+
+  /**
+   * 包裹元素并替换
+   * */
+  static wrapElement(element: HTMLElement, wrapper: HTMLElement | string, attributes) {
+    if (typeof wrapper === 'string')
+      wrapper = Util.makeElement(wrapper, attributes)
+
+    if (element.parentNode)
+      element.parentNode.replaceChild(wrapper, element)
+
+    wrapper.appendChild(element)
+    return wrapper
+  }
+
+  /** 新建元素并添加相应属性 */
+  static makeElement(tagName: string, attributes) {
+    const el = document.createElement(tagName)
+    for (const prop in attributes) {
+      if (prop === 'class')
+        el.className = attributes[prop]
+
+      else
+        el.setAttribute(prop, attributes[prop])
+    }
     return el
   }
 }

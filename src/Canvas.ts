@@ -22,20 +22,52 @@ export class Canvas {
   public contextContainer!: CanvasRenderingContext2D
   /** 缓冲层画布环境 */
   public contextCache!: CanvasRenderingContext2D
+  /** 画布包裹的 div 默认类名 */
+  public containerClass = 'canvas-container'
   /** 整个画布到上面和左边的偏移量 */
   private _offset: Offset
   /** 画布中所有添加的物体 */
-  private _objects!: FabricObject[]
+  private _objects: FabricObject[] = []
 
   constructor(el: HTMLCanvasElement, options: any) {
-    // 初始化配置
-    this._initOptions(options)
     // 初始化下层画布 lower canvas
     this._initStatic(el)
+    // 初始化配置
+    this._initOptions(options)
     // 初始化上层画布
     this._initInteractive()
     // 初始化缓冲层画布
     this._createCacheCanvas()
+  }
+
+  /**
+     * 添加元素
+     * 目前的模式是调用 add 添加物体的时候就立马渲染，如果一次性加入大量元素，就会做很多无用功
+     * 所以可以优化一下，就是先批量添加元素（需要加一个变量标识），最后再统一渲染（手动调用 renderAll 函数即可），这里先了解即可
+    */
+  add(...args): Canvas {
+    this._objects.push(...args)
+    this.renderAll()
+    return this
+  }
+
+  /** 在下层画布上绘制所有物体 */
+  renderAll(): Canvas {
+  // 获取下层画布
+    const ctx = this.contextContainer
+    // 清除画布
+    this.clearContext(ctx)
+    // 简单粗暴的遍历渲染
+    this._objects.forEach((object) => {
+      // render = transfrom + _render
+      object.render(ctx)
+    })
+    return this
+  }
+
+  clearContext(ctx: CanvasRenderingContext2D): Canvas {
+    ctx && ctx.clearRect(0, 0, this.width, this.height)
+    return this
   }
 
   /** 初始化配置 */
@@ -56,7 +88,23 @@ export class Canvas {
 
   /** 初始化上层画布 -> 交互层，也就是 upper-canvas */
   _initInteractive() {
+    this._initWrapperElement()
     this._createUpperCanvas()
+  }
+
+  /** 因为我们用了两个 canvas，所以在 canvas 的外面再多包一个 div 容器 */
+  _initWrapperElement() {
+    this.wrapperEl = Util.wrapElement(this.lowerCanvasEl, 'div', {
+      class: this.containerClass,
+    })
+
+    Util.setStyle(this.wrapperEl, {
+      width: `${this.width}px`,
+      height: `${this.height}px`,
+      position: 'relative',
+    })
+
+    Util.makeElementUnselectable(this.wrapperEl)
   }
 
   /** 创建下层画布 */

@@ -6,4 +6,6 @@ export default defineConfig({
   ],
   outDir: 'dist',
   format: ['iife', 'esm'],
+  globalName: 'fabric',
+  sourcemap: true,
 })
