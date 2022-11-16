@@ -1,3 +1,5 @@
+import type { Point } from './types/object'
+
 const PiBy180 = Math.PI / 180 // 写在这里相当于缓存，因为会频繁调用
 
 export class Util {
@@ -118,7 +120,11 @@ export class Util {
     return wrapper
   }
 
-  /** 新建元素并添加相应属性 */
+  /**
+   * 新建元素并添加相应属性
+   * @param tagName 标签名
+   * @param attributes 样式对象
+   */
   static makeElement(tagName: string, attributes) {
     const el = document.createElement(tagName)
     for (const prop in attributes) {
@@ -129,5 +135,72 @@ export class Util {
         el.setAttribute(prop, attributes[prop])
     }
     return el
+  }
+
+  // 一个物体通常是一堆点的集合
+  static makeBoundingBoxFromPoints(points: Point[]) {
+    const xPoints = points.map(p => p.x)
+    const yPoints = points.map(p => p.y)
+
+    const minX = Util.min(xPoints)
+    const maxX = Util.max(xPoints)
+    const minY = Util.min(yPoints)
+    const maxY = Util.max(yPoints)
+    const width = Math.abs(maxX - minX)
+    const height = Math.abs(maxY - minY)
+
+    return {
+      left: minX,
+      top: minY,
+      width,
+      height,
+    }
+  }
+
+  /**
+     * 数组的最小值
+     */
+  static min(array: any[], byProperty = '') {
+    if (!array || array.length === 0) return undefined
+
+    let i = array.length - 1
+    let result = byProperty ? array[i][byProperty] : array[i]
+
+    if (byProperty) {
+      while (i--) {
+        if (array[i][byProperty] < result)
+          result = array[i][byProperty]
+      }
+    }
+    else {
+      while (i--) {
+        if (array[i] < result)
+          result = array[i]
+      }
+    }
+    return result
+  }
+
+  /**
+     * 数组的最大值
+     */
+  static max(array: any[], byProperty = '') {
+    if (!array || array.length === 0) return undefined
+
+    let i = array.length - 1
+    let result = byProperty ? array[i][byProperty] : array[i]
+    if (byProperty) {
+      while (i--) {
+        if (array[i][byProperty] >= result)
+          result = array[i][byProperty]
+      }
+    }
+    else {
+      while (i--) {
+        if (array[i] >= result)
+          result = array[i]
+      }
+    }
+    return result
   }
 }
